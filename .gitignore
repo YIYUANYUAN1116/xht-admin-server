@@ -1,0 +1,5 @@
+# Project exclude paths
+/xht-common/common-service/target/
+/xht-common/common-util/target/
+/xht-manager/target/
+/xht-model/target/
