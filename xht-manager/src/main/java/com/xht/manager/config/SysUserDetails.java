@@ -1,0 +1,68 @@
+package com.xht.manager.config;
+
+import com.xht.model.entity.system.SysRole;
+import com.xht.model.entity.system.SysUser;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * @author : YIYUANYUAN
+ * @description :
+ * @date: 2023/12/19  11:13
+ */
+public class SysUserDetails implements UserDetails {
+    private SysUser sysUser;
+    private List<SysRole> permissionList;
+
+    public SysUserDetails(SysUser admin, List<SysRole> sysRoleList) {
+        this.sysUser = admin;
+        this.permissionList = sysRoleList;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //用户权限
+       return permissionList.stream()
+                .filter(sysRole -> sysRole.getRoleName()!=null)
+                .map(sysRole -> new SimpleGrantedAuthority(sysRole.getRoleName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return sysUser.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return sysUser.getUserName();
+    }
+
+    //账户未过期 默认true
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    //账户未锁定 默认true
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    //账户认证未过期 默认true
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    //是否可用
+    @Override
+    public boolean isEnabled() {
+        return sysUser.getStatus().equals(1);
+    }
+}
