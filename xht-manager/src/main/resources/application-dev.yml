@@ -41,7 +41,7 @@ knife4j:
 
 # 自定义jwt key
 jwt:
-  tokenHeader: Authorization #JWT存储的请求头
+  token: token #JWT存储的请求头
   secret: xhtSecret #JWT加解密使用的密钥
-  expiration: 604800 #JWT的超期限时间(60*60*24)
+  expiration: 604800000 #JWT的超期限时间(60*60*24)
   tokenHead: Bearer  #JWT负载中拿到开头

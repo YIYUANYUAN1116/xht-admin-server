@@ -43,6 +43,9 @@ public class SysUserDetails implements UserDetails {
         return sysUser.getUserName();
     }
 
+    public SysUser getSysUser(){
+        return sysUser;
+    }
     //账户未过期 默认true
     @Override
     public boolean isAccountNonExpired() {

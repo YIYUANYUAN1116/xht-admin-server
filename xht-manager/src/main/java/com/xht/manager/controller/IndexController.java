@@ -35,8 +35,8 @@ public class IndexController {
     @Autowired
     private SysMenuService sysMenuService;
 
-    @Value("${jwt.tokenHeader}")
-    private String tokenHeader;
+    @Value("${jwt.token}")
+    private String token;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 

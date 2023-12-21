@@ -30,8 +30,8 @@ public class HutoolJwtValidatorUtils implements JwtValidatorUtils{
     private static final Pattern authorizationPattern = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-._~+/]+=*)$",
             Pattern.CASE_INSENSITIVE);
 
-    @Value("${jwt.tokenHeader}")
-    private String tokenHeader;
+    @Value("${jwt.token}")
+    private String token;
 
     @Value("${jwt.expiration}")
     private Long expireTime;
@@ -63,12 +63,13 @@ public class HutoolJwtValidatorUtils implements JwtValidatorUtils{
 
     @Override
     public String resolve(HttpServletRequest request) {
-        String authorization = request.getHeader(tokenHeader);
-        if (!StringUtils.startsWithIgnoreCase(authorization, tokenHead)) {
+        String requestToken = request.getHeader(token);
+        if (requestToken == null){
             return null;
         }
-        Matcher matcher = authorizationPattern.matcher(authorization);
-        if (!matcher.matches()) {
+        String requestTokenHead = request.getHeader("tokenHead");
+        Matcher matcher = authorizationPattern.matcher(requestToken);
+        if (!matcher.matches() || requestTokenHead.equals(tokenHead)) {
             throw new JwtAuthenticationException("令牌格式错误");
         }
         return matcher.group("token");

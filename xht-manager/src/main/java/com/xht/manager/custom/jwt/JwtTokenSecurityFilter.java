@@ -2,7 +2,11 @@ package com.xht.manager.custom.jwt;
 
 import cn.hutool.json.JSONException;
 import cn.hutool.jwt.JWTException;
+import com.alibaba.fastjson2.JSON;
+import com.xht.AuthContextUtil;
 import com.xht.ResponseUtils;
+import com.xht.manager.config.SysUserDetails;
+import com.xht.model.entity.system.SysUser;
 import com.xht.model.vo.common.Result;
 import com.xht.model.vo.common.ResultCodeEnum;
 import jakarta.servlet.FilterChain;
@@ -11,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Data
 public class JwtTokenSecurityFilter extends OncePerRequestFilter {
@@ -30,6 +36,9 @@ public class JwtTokenSecurityFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
 
     public JwtTokenSecurityFilter(){
 
@@ -62,7 +71,9 @@ public class JwtTokenSecurityFilter extends OncePerRequestFilter {
                     // 3.1 校验
                     String username = jwtValidatorUtils.validate(token);
                     // 3.2 根据标识组装用户信息，实际开发可以使用缓存
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    SysUserDetails userDetails = (SysUserDetails) userDetailsService.loadUserByUsername(username);
+                    String userJson = redisTemplate.opsForValue().get("user:login" + token);
+                    AuthContextUtil.set(JSON.parseObject(userJson, SysUser.class));
                     // 3.3 组装认证信息
                     JwtAuthenticationToken authentication = JwtAuthenticationToken.authenticated(userDetails, token, userDetails.getAuthorities());
                     // 3.3 保存用户信息
