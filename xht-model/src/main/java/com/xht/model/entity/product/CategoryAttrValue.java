@@ -1,8 +1,5 @@
 package com.xht.model.entity.product;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
