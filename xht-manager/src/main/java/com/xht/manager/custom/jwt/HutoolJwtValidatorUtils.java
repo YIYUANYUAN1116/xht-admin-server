@@ -2,6 +2,8 @@ package com.xht.manager.custom.jwt;
 
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
+import com.xht.model.vo.common.ResultCodeEnum;
+import com.xht.service.exception.CustomException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,14 +50,14 @@ public class HutoolJwtValidatorUtils implements JwtValidatorUtils{
         // 验签
         boolean verify = JWTUtil.verify(token, secret.getBytes());
         if (!verify) {
-            throw new JwtAuthenticationException("非法令牌");
+            throw new CustomException(ResultCodeEnum.JWT_TOKEN_ERROR);
         }
         // 过期
         final JWT jwt = JWTUtil.parseToken(token);
         long  expireTime = Long.parseLong(jwt.getPayload("expire_time").toString());
 
         if (System.currentTimeMillis() > expireTime) {
-            throw new JwtAuthenticationException("令牌已失效");
+            throw new CustomException(ResultCodeEnum.JWT_TOKEN_ERROR);
         }
         // 返回
         return (String) jwt.getPayload("username");
@@ -70,7 +72,7 @@ public class HutoolJwtValidatorUtils implements JwtValidatorUtils{
         String requestTokenHead = request.getHeader("tokenHead");
         Matcher matcher = authorizationPattern.matcher(requestToken);
         if (!matcher.matches() || requestTokenHead.equals(tokenHead)) {
-            throw new JwtAuthenticationException("令牌格式错误");
+            throw new CustomException(ResultCodeEnum.JWT_TOKEN_ERROR);
         }
         return matcher.group("token");
     }

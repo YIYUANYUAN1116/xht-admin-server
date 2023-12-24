@@ -2,6 +2,7 @@ package com.xht.manager.config;
 
 import com.xht.manager.custom.*;
 import com.xht.manager.custom.jwt.JwtTokenSecurityFilter;
+import com.xht.service.exception.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,41 +54,25 @@ public class SecurityConfig {
 
         //配置除了登录之外的所有请求都要认证
         httpSecurity.authorizeHttpRequests(requests
-                -> requests.requestMatchers("/admin/system/index/generateValidateCode"
-                        ,"/admin/system/index/login").permitAll()
+                -> requests.requestMatchers(
+                        "/admin/system/index/generateValidateCode"
+                        ,"/admin/system/index/login",
+                        "/",
+                        "/*.html",
+                        "/favicon.ico",
+                        "/*/*.html",
+                        "/*/*.css",
+                        "/*/*.js",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**",
+                        "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated());
-//        //配置默认的登录页
-//        httpSecurity.formLogin(httpSecurityFormLogin -> {
-//            httpSecurityFormLogin
-//                    .loginProcessingUrl("/admin/system/index/login")
-//                    .successHandler(customAuthenticationSuccessHandler())
-//                    .failureHandler(customAuthenticationFailureHandler())
-//            ;
-//            //自定义用户名和密码
-//            //.passwordParameter("password").usernameParameter("username")
-//
-//        });
+
 
         //开启basic认证
         httpSecurity.httpBasic(Customizer.withDefaults());
 
-        //logout
-        httpSecurity.logout(httpSecurityLogout -> {
-            httpSecurityLogout.logoutUrl("/logout")
-                    .clearAuthentication(true) //删除Authentication
-                    .deleteCookies("token") //删除指定的key
-                    .invalidateHttpSession(true)
-                    .logoutSuccessHandler(customLogoutSuccessHandler());//session无效
-        });
-
-        //remember-me
-//        httpSecurity.rememberMe(httpSecurityRememberMe -> {
-//            httpSecurityRememberMe.rememberMeParameter("remember");
-//        });
-
-//        //添加验证码过滤器
-//        httpSecurity.addFilterBefore(new CaptchaVerifyFilter(new CustomAuthenticationFailureHandler(), redisTemplate),
-//                UsernamePasswordAuthenticationFilter.class);
 
         //添加token过滤器
         httpSecurity.addFilterBefore(jwtTokenSecurityFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -131,15 +116,6 @@ public class SecurityConfig {
         return new JwtTokenSecurityFilter();
     }
 
-    @Bean
-    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
-    }
-
-    @Bean
-    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
 
     @Bean
     public CustomLogoutSuccessHandler customLogoutSuccessHandler() {

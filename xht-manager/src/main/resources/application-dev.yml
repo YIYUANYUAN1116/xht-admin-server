@@ -45,3 +45,10 @@ jwt:
   secret: xhtSecret #JWT加解密使用的密钥
   expiration: 604800000 #JWT的超期限时间(60*60*24)
   tokenHead: Bearer  #JWT负载中拿到开头
+
+xht:
+  minio:
+    endpointUrl: http://123.60.189.149:9001
+    accessKey: admin
+    secreKey: yzd2021$$
+    bucketName: xht-bucket

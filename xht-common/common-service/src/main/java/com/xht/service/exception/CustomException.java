@@ -13,11 +13,13 @@ import lombok.Data;
 public class CustomException extends RuntimeException{
     private Integer code;
     private String message;
-    private ResultCodeEnum resultCodeEnum;
 
     public CustomException(ResultCodeEnum resultCodeEnum) {
-        this.resultCodeEnum = resultCodeEnum;
         this.code = resultCodeEnum.getCode();
         this.message = resultCodeEnum.getMessage();
+    }
+    public CustomException(String message ,Integer code) {
+       this.code = code;
+       this.message = message;
     }
 }

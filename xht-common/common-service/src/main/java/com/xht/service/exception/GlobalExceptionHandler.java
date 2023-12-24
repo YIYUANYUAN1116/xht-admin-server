@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    //todo security 让全局异常处理失效
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Result error(Exception e){
@@ -26,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     @ResponseBody
     public Result error(CustomException e) {
-        return Result.build(null, e.getResultCodeEnum());
+        return Result.build(null, e.getCode(),e.getMessage());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.xht.manager;
 
+import com.alibaba.fastjson2.JSON;
 import com.xht.manager.custom.jwt.JwtValidatorUtils;
 import com.xht.manager.mapper.SysUserMapper;
 import com.xht.model.entity.system.SysUser;
@@ -44,7 +45,10 @@ class XhtManagerApplicationTests {
 
     @Test
     public void testRedis(){
-        String s = jwtValidatorUtils.generateToken(new HashMap<>());
-        stringRedisTemplate.opsForValue().set("test","test");
+        SysUser sysUser = new SysUser();
+        sysUser.setName("test");
+        String jsonString = JSON.toJSONString(sysUser);
+        SysUser sysUser1 = JSON.parseObject(jsonString, SysUser.class);
+        System.out.println("123");
     }
 }

@@ -1,31 +1,29 @@
 package com.xht.manager.custom.jwt;
 
-import cn.hutool.json.JSONException;
-import cn.hutool.jwt.JWTException;
 import com.alibaba.fastjson2.JSON;
 import com.xht.AuthContextUtil;
-import com.xht.ResponseUtils;
 import com.xht.manager.config.SysUserDetails;
-import com.xht.model.entity.system.SysUser;
-import com.xht.model.vo.common.Result;
 import com.xht.model.vo.common.ResultCodeEnum;
+import com.xht.service.exception.CustomException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Data
+@Slf4j
 public class JwtTokenSecurityFilter extends OncePerRequestFilter {
 
     private static final String FILTER_APPLIED = JwtTokenSecurityFilter.class.getName() + ".APPLIED";
@@ -53,15 +51,10 @@ public class JwtTokenSecurityFilter extends OncePerRequestFilter {
         if (request.getAttribute(FILTER_APPLIED) != null) {
             chain.doFilter(request, response);
         } else {
-            String token;
+
             request.setAttribute(FILTER_APPLIED, Boolean.TRUE);
             // 1. 解析请求中的令牌
-            try {
-                token = jwtValidatorUtils.resolve(request);
-            } catch (JwtAuthenticationException e) {
-                ResponseUtils.buildResponse(response, Result.build( null, ResultCodeEnum.LOGIN_AUTH), HttpStatus.UNAUTHORIZED);
-                return;
-            }
+            String token = request.getHeader("token");
             // 2. 令牌不存在，直接进入下一个过滤器
             if (token == null) {
                 chain.doFilter(request, response);
@@ -69,23 +62,24 @@ public class JwtTokenSecurityFilter extends OncePerRequestFilter {
                 // 3. 存在令牌
                 try {
                     // 3.1 校验
-                    String username = jwtValidatorUtils.validate(token);
+//                    String username = jwtValidatorUtils.validate(token);
                     // 3.2 根据标识组装用户信息，实际开发可以使用缓存
-                    SysUserDetails userDetails = (SysUserDetails) userDetailsService.loadUserByUsername(username);
+//                    SysUserDetails userDetails = (SysUserDetails) userDetailsService.loadUserByUsername(username);
                     String userJson = redisTemplate.opsForValue().get("user:login" + token);
-                    AuthContextUtil.set(JSON.parseObject(userJson, SysUser.class));
+                    SysUserDetails userDetails=JSON.parseObject(userJson, SysUserDetails.class);
+                    assert userDetails != null;
+                    AuthContextUtil.set(userDetails.getSysUser());
                     // 3.3 组装认证信息
-                    JwtAuthenticationToken authentication = JwtAuthenticationToken.authenticated(userDetails, token, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                     // 3.3 保存用户信息
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-
+                    log.info("token认证通过");
                     chain.doFilter(request, response);
-                } catch (JWTException | JSONException | JwtAuthenticationException e) {
-                    //e.printStackTrace();
-                    ResponseUtils.buildResponse(response,
-                            Result.build( null,HttpStatus.UNAUTHORIZED.value(), e.getLocalizedMessage()),
-                            HttpStatus.UNAUTHORIZED);
-                } finally {
+                }catch (Exception e){
+                    throw new CustomException(e.getMessage(),ResultCodeEnum.SYSTEM_ERROR2.getCode());
+                }finally{
                     request.removeAttribute(FILTER_APPLIED);
                 }
             }

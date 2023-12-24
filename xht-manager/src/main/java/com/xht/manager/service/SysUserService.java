@@ -14,5 +14,7 @@ public interface SysUserService {
 
     SysUser selectUserInfoByUserName(String username);
 
-    String login(String userName, String password);
+    String login(LoginDto loginDto);
+
+    void logout(String token);
 }

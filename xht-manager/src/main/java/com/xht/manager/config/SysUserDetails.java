@@ -2,10 +2,12 @@ package com.xht.manager.config;
 
 import com.xht.model.entity.system.SysRole;
 import com.xht.model.entity.system.SysUser;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,20 +19,19 @@ import java.util.stream.Collectors;
  */
 public class SysUserDetails implements UserDetails {
     private SysUser sysUser;
-    private List<SysRole> permissionList;
 
-    public SysUserDetails(SysUser admin, List<SysRole> sysRoleList) {
-        this.sysUser = admin;
-        this.permissionList = sysRoleList;
+    // SpringSecurity对应的权限信息
+    private List<SimpleGrantedAuthority> authorities;
+
+    public SysUserDetails(SysUser sysUser,List<SimpleGrantedAuthority>  authorities) {
+        this.sysUser = sysUser;
+       this.authorities = authorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //用户权限
-       return permissionList.stream()
-                .filter(sysRole -> sysRole.getRoleName()!=null)
-                .map(sysRole -> new SimpleGrantedAuthority(sysRole.getRoleName()))
-                .collect(Collectors.toList());
+       return this.authorities;
     }
 
     @Override

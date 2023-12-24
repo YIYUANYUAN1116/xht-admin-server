@@ -1,6 +1,8 @@
 package com.xht.manager.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONWriter;
 import com.xht.manager.config.SysUserDetails;
 import com.xht.manager.custom.jwt.HutoolJwtValidatorUtils;
 import com.xht.manager.mapper.SysUserMapper;
@@ -50,11 +52,40 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public String login(String userName, String password) {
+    public String login(LoginDto loginDto) {
+        //1.验证码校验
+        String captcha = loginDto.getCaptcha();
+        String captchaKey = loginDto.getCodeKey();
+
+        if (StrUtil.isEmpty(captcha) || StrUtil.isEmpty(captchaKey)) {
+            throw new CustomException(ResultCodeEnum.VALIDATE_CODE_ERROR);
+        }
+
+        String cacheData = redisTemplate.opsForValue().get(captchaKey);
+        if (StrUtil.isEmpty(cacheData)) {
+            // 未查询到ID对应的验证码
+            throw new CustomException(ResultCodeEnum.VALIDATE_CODE_EXPIRED);
+        }
+        // 校验验证码是否输入正确
+        if (!cacheData.equalsIgnoreCase(captcha)) {
+            throw new CustomException(ResultCodeEnum.VALIDATE_CODE_ERROR);
+        }
+        // 删除验证码...
+        redisTemplate.delete(captchaKey);
+
+
+        //登录校验
+        String userName = loginDto.getUserName();
+        String password = loginDto.getPassword();
+
+        if (StrUtil.isEmpty(userName) || StrUtil.isEmpty(password)) {
+            throw new CustomException(ResultCodeEnum.LOGIN_ERROR);
+        }
+
         String token = null;
         try {
-            SysUserDetails userDetails = (SysUserDetails) userDetailsService.loadUserByUsername(userName);
-            if (!passwordEncoder.matches(password,userDetails.getPassword())){
+            SysUserDetails userDetails = (SysUserDetails) userDetailsService.loadUserByUsername(loginDto.getUserName());
+            if (!passwordEncoder.matches(loginDto.getPassword(),userDetails.getPassword())){
                 throw new CustomException(ResultCodeEnum.LOGIN_ERROR);
             }
 
@@ -62,9 +93,9 @@ public class SysUserServiceImpl implements SysUserService {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             token = hutoolJwtValidatorUtils.generateToken(userDetails);
 
-            //8 把登录成功用户信息放到redis里面
+            String jsonString = JSON.toJSONString(userDetails, JSONWriter.Feature.NullAsDefaultValue);
+            // 把登录成功用户信息放到redis里面
             // key : token   value: 用户信息
-
             redisTemplate.opsForValue()
                     .set("user:login"+token,
                             JSON.toJSONString(userDetails),
@@ -76,5 +107,9 @@ public class SysUserServiceImpl implements SysUserService {
         return token;
     }
 
+    @Override
+    public void logout(String token) {
+        redisTemplate.delete("user:login" + token);
+    }
 
 }

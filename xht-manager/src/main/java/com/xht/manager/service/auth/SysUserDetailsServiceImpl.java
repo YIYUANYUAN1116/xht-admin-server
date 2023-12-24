@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xht.manager.config.SysUserDetails;
 import com.xht.manager.mapper.SysRoleMapper;
 import com.xht.manager.mapper.SysUserMapper;
+import com.xht.manager.utils.RoleToAuthority;
 import com.xht.model.entity.system.SysRole;
 import com.xht.model.entity.system.SysUser;
 import jakarta.annotation.Resource;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @Service
 public class SysUserDetailsServiceImpl implements UserDetailsService {
+    private
     @Resource
     SysUserMapper sysUserMapper;
 
@@ -32,7 +35,7 @@ public class SysUserDetailsServiceImpl implements UserDetailsService {
         SysUser sysUser = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName, username));
         if (sysUser != null){
             List<SysRole> sysRoleList = sysRoleMapper.selectByUserId(sysUser.getId());
-            return new SysUserDetails(sysUser,sysRoleList);
+            return new SysUserDetails(sysUser, RoleToAuthority.toAuthority(sysRoleList));
         }
         throw new UsernameNotFoundException("用户名或密码错误");
     }
