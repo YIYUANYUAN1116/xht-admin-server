@@ -4,6 +4,7 @@ import com.xht.manager.custom.*;
 import com.xht.manager.custom.jwt.JwtTokenSecurityFilter;
 import com.xht.service.exception.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;

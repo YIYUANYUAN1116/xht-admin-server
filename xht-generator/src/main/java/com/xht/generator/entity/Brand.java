@@ -1,9 +1,7 @@
 package com.xht.generator.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.xht.model.entity.base.BaseEntity;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,19 +11,13 @@ import lombok.Setter;
  * </p>
  *
  * @author xht
- * @since 2023-12-24
+ * @since 2023-12-25
  */
 @Getter
 @Setter
-public class Brand implements Serializable {
+public class Brand extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * ID
-     */
-      @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
 
     /**
      * 品牌名称
@@ -36,19 +28,4 @@ public class Brand implements Serializable {
      * 品牌图标
      */
     private String logo;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
-
-    /**
-     * 删除标记（0:不可用 1:可用）
-     */
-    private Byte isDeleted;
 }

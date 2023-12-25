@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScans;
 @SpringBootApplication
 @MapperScan("com.xht.manager.mapper")
 @EnableConfigurationProperties(value = { MinioProperties.class})
+@ComponentScan(basePackages = "com.xht")
 public class XhtManagerApplication {
 
     public static void main(String[] args) {

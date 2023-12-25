@@ -17,12 +17,6 @@ public class GlobalExceptionHandler {
 
     //todo security 让全局异常处理失效
 
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public Result error(Exception e){
-        e.printStackTrace();
-        return  Result.build(null, ResultCodeEnum.SYSTEM_ERROR);
-    }
 
     //自定义异常处理
     @ExceptionHandler(CustomException.class)
@@ -30,5 +24,13 @@ public class GlobalExceptionHandler {
     public Result error(CustomException e) {
         return Result.build(null, e.getCode(),e.getMessage());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public Result error(Exception e){
+        e.printStackTrace();
+        return  Result.build(null, 999,e.getMessage());
+    }
+
 
 }

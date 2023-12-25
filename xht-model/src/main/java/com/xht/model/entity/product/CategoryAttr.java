@@ -1,12 +1,14 @@
 package com.xht.model.entity.product;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -57,4 +59,7 @@ public class CategoryAttr implements Serializable {
      * 逻辑删除
      */
     private Byte isDelete;
+
+    @TableField(exist = false)
+    List<CategoryAttrValue> categoryAttrValues;
 }
