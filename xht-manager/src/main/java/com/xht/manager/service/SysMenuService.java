@@ -1,23 +1,20 @@
 package com.xht.manager.service;
-
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.xht.model.entity.system.SysMenu;
-import com.xht.model.vo.system.SysMenuVo;
 
 import java.util.List;
 
-public interface SysMenuService {
-    //菜单列表
-    List<SysMenu> findNodes();
+/**
+ * <p>
+ * 菜单表 服务类
+ * </p>
+ *
+ * @author xht
+ * @since 2023-12-28
+ */
+public interface SysMenuService extends IService<SysMenu> {
 
-    //菜单添加
-    void save(SysMenu sysMenu);
+    List<SysMenu> listByRoleId(Long roleId);
 
-    //菜单修改
-    void update(SysMenu sysMenu);
-
-    //菜单删除
-    void removeById(Long id);
-
-    //查询用户可以操作菜单
-    List<SysMenuVo> findMenusByUserId();
+    void removeId(Long id);
 }

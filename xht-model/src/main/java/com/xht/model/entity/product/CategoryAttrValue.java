@@ -1,5 +1,6 @@
 package com.xht.model.entity.product;
 
+import com.xht.model.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,24 +19,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Tag(name = "category_attr_value")
-public class CategoryAttrValue implements Serializable {
+public class CategoryAttrValue  extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键
-     */
-    private Integer id;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
 
     /**
      * 属性值
@@ -45,10 +31,6 @@ public class CategoryAttrValue implements Serializable {
     /**
      * attrId
      */
-    private Integer attrId;
+    private Long attrId;
 
-    /**
-     * 逻辑删除
-     */
-    private Byte isDelete;
 }

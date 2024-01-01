@@ -2,31 +2,20 @@ package com.xht.manager.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xht.model.entity.system.SysMenu;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Mapper
+
+/**
+ * <p>
+ * 菜单表 Mapper 接口
+ * </p>
+ *
+ * @author xht
+ * @since 2023-12-28
+ */
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
-    //1 查询所有菜单，返回list集合
-    List<SysMenu> findAll();
-
-    //添加
-    void save(SysMenu sysMenu);
-
-    //菜单修改
-    void update(SysMenu sysMenu);
-
-    //根据当前菜单id，查询是否包含子菜单
-    int selectCountById(Long id);
-
-    //删除
-    void delete(Long id);
-
-    //根据userId查询可以操作菜单
-    List<SysMenu> findMenusByUserId(Long userId);
-
-    //获取当前添加菜单的父菜单
-    SysMenu selectParentMenu(Long parentId);
+    List<SysMenu> listByRoleId(@Param("roleId") Long roleId);
 }

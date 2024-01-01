@@ -1,7 +1,7 @@
 package com.xht.generator.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author xht
- * @since 2023-12-24
+ * @since 2023-12-25
  */
-@Controller
+@RestController
 @RequestMapping("/categoryAttrValue")
 public class CategoryAttrValueController {
 

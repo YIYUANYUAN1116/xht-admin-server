@@ -1,22 +1,37 @@
 package com.xht.model.entity.system;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xht.model.entity.base.BaseEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Schema(description = "角色实体类")
+/**
+ * <p>
+ * 角色
+ * </p>
+ *
+ * @author xht
+ * @since 2023-12-28
+ */
+@Getter
+@Setter
+@TableName("sys_role")
 public class SysRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @Schema(description = "角色名称")
+    /**
+     * 角色名称
+     */
     private String roleName;
 
-    @Schema(description = "角色编码")
+    /**
+     * 角色编码
+     */
     private String roleCode;
 
-    @Schema(description = "描述")
+    /**
+     * 描述
+     */
     private String description;
-
 }

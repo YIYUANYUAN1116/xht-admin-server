@@ -1,16 +1,7 @@
 package com.xht.generator.controller;
 
-import com.xht.manager.service.CategoryService;
-import com.xht.model.entity.product.Category;
-import com.xht.model.vo.common.Result;
-import com.xht.model.vo.common.ResultCodeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -18,9 +9,10 @@ import java.util.List;
  * </p>
  *
  * @author xht
- * @since 2023-12-24
+ * @since 2023-12-25
  */
-@Controller
+@RestController
+@RequestMapping("/category")
 public class CategoryController {
 
 }

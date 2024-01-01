@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xht.manager.mapper.SysOperLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xht.model.entity.system.SysOperLog">
+        <result column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="title" property="title" />
+        <result column="method" property="method" />
+        <result column="request_method" property="requestMethod" />
+        <result column="operator_type" property="operatorType" />
+        <result column="oper_name" property="operName" />
+        <result column="oper_url" property="operUrl" />
+        <result column="oper_ip" property="operIp" />
+        <result column="oper_param" property="operParam" />
+        <result column="json_result" property="jsonResult" />
+        <result column="status" property="status" />
+        <result column="error_msg" property="errorMsg" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        create_time,
+        update_time,
+        is_deleted,
+        title, method, request_method, operator_type, oper_name, oper_url, oper_ip, oper_param, json_result, status, error_msg
+    </sql>
+
+</mapper>

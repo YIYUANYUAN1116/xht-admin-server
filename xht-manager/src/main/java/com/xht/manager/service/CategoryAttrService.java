@@ -15,5 +15,11 @@ import java.util.List;
  * @since 2023-12-24
  */
 public interface CategoryAttrService extends IService<CategoryAttr> {
-    List<CategoryAttr> getAttrByCategoryId(Long category);
+    List<CategoryAttr> getAttrByCategoryId(Long category1Id,Long category2Id,Long category3Id);
+
+    void saveAttr(CategoryAttr attr);
+
+    void deleted(Long attrId);
+
+    List<CategoryAttr> getAttrByCategory3Id(Long category3Id);
 }

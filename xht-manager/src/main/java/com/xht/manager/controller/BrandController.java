@@ -56,7 +56,7 @@ public class BrandController {
 
     @Operation(summary = "删除")
     @DeleteMapping("/{id}")
-    public Result delete(Integer id) {
+    public Result delete(@PathVariable Integer id) {
         brandService.delete(id);
         return Result.build(null, ResultCodeEnum.SUCCESS);
     }

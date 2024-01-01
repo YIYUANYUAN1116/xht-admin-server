@@ -20,6 +20,9 @@ mybatis-plus:
   config-location: classpath:/mybatis-config.xml
   global-config:
     db-config:
+      logic-delete-field: isDeleted #默认deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
       id-type: auto
 # springdoc-openapi项目配置
 springdoc:

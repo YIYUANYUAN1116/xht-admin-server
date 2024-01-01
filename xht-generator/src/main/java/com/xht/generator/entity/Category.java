@@ -1,9 +1,7 @@
 package com.xht.generator.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.xht.model.entity.base.BaseEntity;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,19 +11,13 @@ import lombok.Setter;
  * </p>
  *
  * @author xht
- * @since 2023-12-24
+ * @since 2023-12-25
  */
 @Getter
 @Setter
-public class Category implements Serializable {
+public class Category extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 分类id
-     */
-      @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
 
     /**
      * 分类名称
@@ -48,19 +40,4 @@ public class Category implements Serializable {
      * 排序
      */
     private Integer orderNum;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
-
-    /**
-     * 删除标记（0:不可用 1:可用）
-     */
-    private Byte isDeleted;
 }

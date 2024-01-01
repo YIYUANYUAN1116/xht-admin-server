@@ -109,7 +109,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         //忽略授权访问路径
-        return web -> web.ignoring().requestMatchers("/hello","/admin/system/index/login");
+        return web -> web.ignoring().requestMatchers("/admin/system/index/login");
     }
 
     @Bean

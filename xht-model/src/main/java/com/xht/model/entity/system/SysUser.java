@@ -1,5 +1,6 @@
 package com.xht.model.entity.system;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.xht.model.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -31,4 +32,9 @@ public class SysUser extends BaseEntity {
 	@Schema(description = "状态（1：正常 0：停用）")
 	private Integer status;
 
+	@TableField(exist = false)
+	String roleName;
+
+	@TableField(exist = false)
+	List<SysRole> sysRoleList;
 }

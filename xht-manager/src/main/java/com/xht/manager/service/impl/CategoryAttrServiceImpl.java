@@ -31,11 +31,53 @@ public class CategoryAttrServiceImpl extends ServiceImpl<CategoryAttrMapper, Cat
     private CategoryAttrValueService categoryAttrValueService;
 
     @Override
-    public List<CategoryAttr> getAttrByCategoryId(Long category) {
-        List<CategoryAttr> categoryAttrs = categoryAttrMapper.selectList(new LambdaQueryWrapper<CategoryAttr>().eq(CategoryAttr::getCategoryId, category));
+    public List<CategoryAttr> getAttrByCategoryId(Long category1Id,Long category2Id,Long category3Id) {
+        List<CategoryAttr> categoryAttrs = categoryAttrMapper.selectList(new LambdaQueryWrapper<CategoryAttr>().eq(CategoryAttr::getCategoryId, category1Id)
+                .or().eq(CategoryAttr::getCategoryId, category2Id).or().eq(CategoryAttr::getCategoryId, category3Id));
         for (CategoryAttr categoryAttr : categoryAttrs) {
             List<CategoryAttrValue> categoryAttrValues = categoryAttrValueService.getByAttrId(categoryAttr.getId());
-            categoryAttr.setCategoryAttrValues(categoryAttrValues);
+            categoryAttr.setAttrValueList(categoryAttrValues);
+        }
+        return categoryAttrs;
+    }
+
+    @Override
+    public void saveAttr(CategoryAttr attr) {
+        //新增
+        if (attr.getId() == null){
+            categoryAttrMapper.insert(attr);
+            List<CategoryAttrValue> attrValueList = attr.getAttrValueList();
+            for (CategoryAttrValue categoryAttrValue : attrValueList) {
+                categoryAttrValue.setAttrId(attr.getId());
+                categoryAttrValueService.save(categoryAttrValue);
+            }
+        }else {
+            //更新
+            categoryAttrMapper.updateById(attr);
+            List<CategoryAttrValue> attrValueList = attr.getAttrValueList();
+            for (CategoryAttrValue categoryAttrValue : attrValueList) {
+                if (categoryAttrValue.getId() == null){
+                    categoryAttrValue.setAttrId(attr.getId());
+                    categoryAttrValueService.save(categoryAttrValue);
+                }else {
+                    categoryAttrValueService.updateById(categoryAttrValue);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void deleted(Long attrId) {
+        categoryAttrMapper.deleteById(attrId);
+        categoryAttrValueService.deletedByAttrId(attrId);
+    }
+
+    @Override
+    public List<CategoryAttr> getAttrByCategory3Id(Long category3Id) {
+        List<CategoryAttr> categoryAttrs = categoryAttrMapper.selectList(new LambdaQueryWrapper<CategoryAttr>().eq(CategoryAttr::getCategoryId, category3Id));
+        for (CategoryAttr categoryAttr : categoryAttrs) {
+            List<CategoryAttrValue> categoryAttrValues = categoryAttrValueService.getByAttrId(categoryAttr.getId());
+            categoryAttr.setAttrValueList(categoryAttrValues);
         }
         return categoryAttrs;
     }

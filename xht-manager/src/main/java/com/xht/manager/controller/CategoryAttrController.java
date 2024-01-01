@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,9 +30,30 @@ public class CategoryAttrController {
     private CategoryAttrService categoryAttrService;
 
     @Operation(summary = "根据category获取attr")
-    @GetMapping("/{categoryId}")
-    public Result getAttrByCategory(@PathVariable Long categoryId){
-        List<CategoryAttr> attrByCategoryId = categoryAttrService.getAttrByCategoryId(categoryId);
+    @GetMapping("/{category1Id}/{category2Id}/{category3Id}")
+    public Result getAttrByCategory(@PathVariable Long category1Id,@PathVariable Long category2Id,@PathVariable Long category3Id){
+        List<CategoryAttr> attrByCategoryId = categoryAttrService.getAttrByCategoryId(category1Id,category2Id,category3Id);
         return Result.build(attrByCategoryId, ResultCodeEnum.SUCCESS);
+    }
+
+    @Operation(summary = "根据category获取attr")
+    @GetMapping("/{category3Id}")
+    public Result getAttrByCategory(@PathVariable Long category3Id){
+        List<CategoryAttr> attrByCategoryId = categoryAttrService.getAttrByCategory3Id(category3Id);
+        return Result.build(attrByCategoryId, ResultCodeEnum.SUCCESS);
+    }
+
+    @Operation(summary = "新增")
+    @PostMapping()
+    public Result saveAttr(@RequestBody CategoryAttr attr){
+        categoryAttrService.saveAttr(attr);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
+    @Operation(summary = "新增")
+    @DeleteMapping("/{attrId}")
+    public Result saveAttr(@PathVariable Long attrId){
+        categoryAttrService.deleted(attrId);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
     }
 }

@@ -1,21 +1,28 @@
 package com.xht.model.entity.system;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xht.model.entity.base.BaseEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * @author : YIYUANYUAN
- * @description :
- * @date: 2023/12/19  21:10
+ * <p>
+ * 角色菜单
+ * </p>
+ *
+ * @author xht
+ * @since 2023-12-28
  */
-
-@Data
-@Schema(description = "角色菜单实体类")
+@Getter
+@Setter
+@TableName("sys_role_menu")
 public class SysRoleMenu extends BaseEntity {
-    @Schema(description = "角色id")
+
+    private static final long serialVersionUID = 1L;
+
     private Long roleId;
-    @Schema(description = "菜单id")
+
     private Long menuId;
-    private Integer isHalf;
+
+    private Byte isHalf;
 }

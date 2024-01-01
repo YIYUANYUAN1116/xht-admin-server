@@ -3,7 +3,9 @@ package com.xht.manager;
 import com.alibaba.fastjson2.JSON;
 import com.xht.manager.custom.jwt.JwtValidatorUtils;
 import com.xht.manager.mapper.SysUserMapper;
+import com.xht.manager.service.FileUploadService;
 import com.xht.model.entity.system.SysUser;
+import com.xht.model.vo.system.SysUserVo;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
@@ -11,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.HashMap;
 
 @SpringBootTest
 class XhtManagerApplicationTests {
@@ -30,11 +30,7 @@ class XhtManagerApplicationTests {
         SysUser sysUserInsert = new SysUser();
         BeanUtils.copyProperties(sysUser,sysUserInsert);
         String encode = new BCryptPasswordEncoder().encode("123456");
-        sysUserInsert.setPassword(new BCryptPasswordEncoder().encode("123456"));
-        sysUserInsert.setName("test1");
-        sysUserInsert.setUserName("test1");
-        sysUserInsert.setId(null);
-        sysUserMapper.insert(sysUserInsert);
+        System.out.println(encode);
     }
 
     @Resource
@@ -51,4 +47,20 @@ class XhtManagerApplicationTests {
         SysUser sysUser1 = JSON.parseObject(jsonString, SysUser.class);
         System.out.println("123");
     }
+
+    @Resource
+    FileUploadService fileUploadService;
+
+    @Test
+    public void delete(){
+//        String str = "20231226/aa6c51dbb4364b6ab279ac972c929772R.png";
+//        fileUploadService.delete(str);
+        String str = "http://123.60.189.149:9001/xht-bucket/20231226/af390e96253c403a9a49173c2ea86d0cth.jpg";
+        int i = str.indexOf("xht-bucket/");
+        String substring = str.substring(i+"xht-bucket/".length());
+        System.out.println(substring);
+    }
+
+
+
 }

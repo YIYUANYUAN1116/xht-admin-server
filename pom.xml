@@ -23,6 +23,7 @@
         <module>xht-manager</module>
         <module>xht-model</module>
         <module>xht-generator</module>
+        <module>xht-common/common-log</module>
     </modules>
 
 

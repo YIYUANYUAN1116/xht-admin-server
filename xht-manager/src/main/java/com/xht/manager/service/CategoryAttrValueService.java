@@ -17,4 +17,6 @@ import java.util.List;
 public interface CategoryAttrValueService extends IService<CategoryAttrValue> {
 
     List<CategoryAttrValue> getByAttrId(Long id);
+
+    void deletedByAttrId(Long attrId);
 }

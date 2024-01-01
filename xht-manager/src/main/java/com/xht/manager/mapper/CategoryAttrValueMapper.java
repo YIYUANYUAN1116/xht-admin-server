@@ -3,6 +3,7 @@ package com.xht.manager.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xht.model.entity.product.CategoryAttrValue;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -14,4 +15,5 @@ import com.xht.model.entity.product.CategoryAttrValue;
  */
 public interface CategoryAttrValueMapper extends BaseMapper<CategoryAttrValue> {
 
+    void deleteByAttrId(@Param("attrId") Long attrId);
 }
