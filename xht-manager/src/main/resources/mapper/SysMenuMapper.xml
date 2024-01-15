@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xht.manager.mapper.SysMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xht.model.entity.system.SysMenu">
+        <result column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="p_id" property="pId" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="status" property="status" />
+        <result column="level" property="level" />
+        <result column="to_code" property="toCode" />
+        <result column="type" property="type" />
+        <result column="selected" property="selected" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        create_time,
+        update_time,
+        is_deleted,
+        p_id, name, code, status, level, to_code, type, `selected`
+    </sql>
+
+    <sql id="Base_Column_List_prefix">
+        sm.id,
+        sm.create_time,
+        sm.update_time,
+        sm.is_deleted,
+        sm.p_id, sm.name, sm.code, sm.status, sm.level, sm.to_code, sm.type, sm.`selected`
+    </sql>
+
+    <select id="listByRoleId" resultType="com.xht.model.entity.system.SysMenu">
+        select <include refid="Base_Column_List_prefix"/>
+        from sys_menu sm
+        left join sys_role_menu srm on srm.menu_id = sm.id
+        where srm.role_id = #{roleId} and sm.is_deleted=0 and srm.is_deleted=0 and sm.level=4
+    </select>
+
+</mapper>

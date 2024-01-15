@@ -1,12 +1,15 @@
 package com.xht.model.entity.product;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.xht.model.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -19,24 +22,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Tag(name = "category_attr")
-public class CategoryAttr implements Serializable {
+public class CategoryAttr extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键
-     */
-    private Long id;
-
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
 
     /**
      * 属性名称
@@ -53,8 +41,8 @@ public class CategoryAttr implements Serializable {
      */
     private Integer categoryLevel;
 
-    /**
-     * 逻辑删除
-     */
-    private Byte isDelete;
+
+
+    @TableField(exist = false)
+    List<CategoryAttrValue> attrValueList;
 }

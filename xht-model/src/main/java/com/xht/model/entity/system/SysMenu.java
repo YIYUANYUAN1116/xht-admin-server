@@ -1,32 +1,53 @@
 package com.xht.model.entity.system;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.xht.model.entity.base.BaseEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Schema(description = "系统菜单实体类")
-@Data
+/**
+ * <p>
+ * 菜单表
+ * </p>
+ *
+ * @author xht
+ * @since 2023-12-28
+ */
+@Getter
+@Setter
+@TableName("sys_menu")
 public class SysMenu extends BaseEntity {
 
-	@Schema(description = "父节点id")
-	private Long parentId;
+    private static final long serialVersionUID = 1L;
 
-	@Schema(description = "节点标题")
-	private String title;
+    /**
+     * 所属上级
+     */
+    private Long pId;
 
-	@Schema(description = "组件名称")
-	private String component;
+    /**
+     * 菜单标题
+     */
+    private String name;
 
-	@Schema(description = "排序值")
-	private Integer sortValue;
+    private String code;
 
-	@Schema(description = "状态(0:禁止,1:正常)")
-	private Integer status;
+    /**
+     * 状态(0:禁止,1:正常)
+     */
+    private Integer status;
 
-	// 下级列表
-	@Schema(description = "子节点")
-	private List<SysMenu> children;
+    private Integer level;
 
+    private String toCode;
+
+    private Integer type;
+
+    private Integer selected;
+
+    @TableField(exist = false)
+    private List<SysMenu> children;
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author xht
- * @since 2023-12-24
+ * @since 2023-12-25
  */
 @Service
 public class CategoryAttrValueServiceImpl extends ServiceImpl<CategoryAttrValueMapper, CategoryAttrValue> implements CategoryAttrValueService {

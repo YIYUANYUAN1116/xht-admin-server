@@ -4,6 +4,7 @@ import com.xht.manager.custom.*;
 import com.xht.manager.custom.jwt.JwtTokenSecurityFilter;
 import com.xht.service.exception.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -108,7 +109,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         //忽略授权访问路径
-        return web -> web.ignoring().requestMatchers("/hello","/admin/system/index/login");
+        return web -> web.ignoring().requestMatchers("/admin/system/index/login");
     }
 
     @Bean

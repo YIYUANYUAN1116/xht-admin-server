@@ -3,6 +3,8 @@ package com.xht.manager.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xht.model.entity.product.CategoryAttrValue;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -14,4 +16,7 @@ import com.xht.model.entity.product.CategoryAttrValue;
  */
 public interface CategoryAttrValueService extends IService<CategoryAttrValue> {
 
+    List<CategoryAttrValue> getByAttrId(Long id);
+
+    void deletedByAttrId(Long attrId);
 }

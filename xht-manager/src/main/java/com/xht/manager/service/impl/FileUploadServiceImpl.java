@@ -6,16 +6,17 @@ import com.xht.manager.properties.MinioProperties;
 import com.xht.manager.service.FileUploadService;
 import com.xht.model.vo.common.ResultCodeEnum;
 import com.xht.service.exception.CustomException;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
+import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -27,19 +28,17 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class FileUploadServiceImpl implements FileUploadService {
+
     @Autowired
     private MinioProperties minioProperties;
+
+    @Autowired
+    private MinioClient minioClient;
 
     @Override
     public String upload(MultipartFile file) {
 
-
         try {
-            //创建对象
-            MinioClient minioClient = MinioClient.builder()
-                    .credentials(minioProperties.getAccessKey(), minioProperties.getSecreKey())
-                    .endpoint(minioProperties.getEndpointUrl())
-                    .build();
             //创建bucket
             boolean b = minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioProperties.getBucketName()).build());
             if (!b){
@@ -65,6 +64,21 @@ public class FileUploadServiceImpl implements FileUploadService {
         }catch (Exception e){
             e.printStackTrace();
             throw new CustomException(ResultCodeEnum.SYSTEM_ERROR);
+        }
+    }
+
+    @Override
+    public void delete(String path){
+        try {
+            String bucketName = minioProperties.getBucketName();
+            int index = path.indexOf(bucketName+"/");
+            String objectName = path.substring(index+bucketName.length());
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(minioProperties.getBucketName())
+                    .object(objectName).build());
+        } catch (Exception e) {
+            throw new CustomException("删除失败",999);
+            //http://123.60.189.149:9001/xht-bucket/20231226/5ed82ee717634ee5bd0500b3360aafbfR.png
         }
     }
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xht.generator.mapper.SkuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xht.generator.entity.Sku">
+        <result column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="spu_id" property="spuId" />
+        <result column="price" property="price" />
+        <result column="sku_name" property="skuName" />
+        <result column="sku_desc" property="skuDesc" />
+        <result column="weight" property="weight" />
+        <result column="tm_id" property="tmId" />
+        <result column="category3_id" property="category3Id" />
+        <result column="sku_default_img" property="skuDefaultImg" />
+        <result column="is_sale" property="isSale" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        create_time,
+        update_time,
+        spu_id, price, sku_name, sku_desc, weight, tm_id, category3_id, sku_default_img, is_sale
+    </sql>
+
+</mapper>

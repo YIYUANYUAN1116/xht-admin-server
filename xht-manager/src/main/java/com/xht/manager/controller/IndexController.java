@@ -1,14 +1,11 @@
 package com.xht.manager.controller;
 
 import com.xht.AuthContextUtil;
-import com.xht.manager.service.SysMenuService;
 import com.xht.manager.service.SysUserService;
 import com.xht.manager.service.ValidateCodeService;
 import com.xht.model.dto.system.LoginDto;
-import com.xht.model.entity.system.SysUser;
 import com.xht.model.vo.common.Result;
 import com.xht.model.vo.common.ResultCodeEnum;
-import com.xht.model.vo.system.LoginVo;
 import com.xht.model.vo.system.SysMenuVo;
 import com.xht.model.vo.system.ValidateCodeVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Tag(name = "用户接口")
+@Tag(name = "登录接口")
 @RestController
 @RequestMapping(value = "/admin/system/index")
 public class IndexController {
@@ -32,20 +29,12 @@ public class IndexController {
     @Autowired
     private ValidateCodeService validateCodeService;
 
-    @Autowired
-    private SysMenuService sysMenuService;
+
 
     @Value("${jwt.token}")
     private String token;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
-
-    //查询用户可以操作菜单
-    @GetMapping("/menus")
-    public Result menus() {
-        List<SysMenuVo> list = sysMenuService.findMenusByUserId();
-        return Result.build(list,ResultCodeEnum.SUCCESS);
-    }
 
     //用户退出
     @GetMapping(value = "/logout")
