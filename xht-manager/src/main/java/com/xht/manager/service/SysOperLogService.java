@@ -1,7 +1,11 @@
 package com.xht.manager.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xht.model.entity.product.Brand;
 import com.xht.model.entity.system.SysOperLog;
+
+import java.util.Date;
 
 
 /**
@@ -14,4 +18,6 @@ import com.xht.model.entity.system.SysOperLog;
  */
 public interface SysOperLogService extends IService<SysOperLog> {
 
+
+    Page<SysOperLog> listPage(Integer page, Integer limit, Date date);
 }

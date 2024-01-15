@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.xht.fast</groupId>
-    <artifactId>xht-fast-admin</artifactId>
+    <artifactId>xht-admin-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>xht-fast-admin</name>
-    <description>xht-fast-admin</description>
+    <name>xht-admin-server</name>
+    <description>xht-admin-server</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
