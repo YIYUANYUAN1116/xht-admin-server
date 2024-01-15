@@ -13,6 +13,8 @@ spring:
       host: 123.60.189.149
       port: 6379
       password: yzd2021$$
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 
 
 mybatis-plus:

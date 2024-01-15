@@ -6,7 +6,6 @@ import com.xht.manager.service.BrandService;
 import com.xht.model.entity.product.Brand;
 import com.xht.model.vo.common.Result;
 import com.xht.model.vo.common.ResultCodeEnum;
-import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
