@@ -1,5 +1,6 @@
 package com.xht.model.entity.product;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.xht.model.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -26,9 +27,14 @@ public class Category extends BaseEntity {
 	private Integer orderNum;
 
 	@Schema(description = "是否存在子节点")
+	@TableField(exist = false)
 	private Boolean hasChildren;
 
 	@Schema(description = "子节点List集合")
+	@TableField(exist = false)
 	private List<Category> children;
+
+	@Schema(description = "是否是子节点")
+	private Boolean isLeaf;
 
 }

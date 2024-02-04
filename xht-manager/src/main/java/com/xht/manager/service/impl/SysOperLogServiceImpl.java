@@ -28,10 +28,14 @@ public class SysOperLogServiceImpl extends ServiceImpl<SysOperLogMapper, SysOper
 
 
     @Override
-    public Page<SysOperLog> listPage(Integer page, Integer limit, Date date) {
+    public Page<SysOperLog> listPage(Integer page, Integer limit, Date startTime,Date endTime) {
         LambdaQueryWrapper<SysOperLog> queryWrapper = new LambdaQueryWrapper<>();
-        if (date != null){
-            queryWrapper.eq(SysOperLog::getCreateTime,date);
+        if (startTime != null && endTime!=null){
+            queryWrapper.gt(SysOperLog::getCreateTime,startTime).lt(SysOperLog::getCreateTime,endTime);
+        }else if (startTime != null){
+            queryWrapper.gt(SysOperLog::getCreateTime,startTime);
+        }else if (endTime != null){
+            queryWrapper.lt(SysOperLog::getCreateTime,endTime);
         }
 
         return baseMapper.selectPage(new Page<>(page,limit),queryWrapper);

@@ -14,6 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @SpringBootTest
 class XhtManagerApplicationTests {
 
@@ -61,6 +66,21 @@ class XhtManagerApplicationTests {
         System.out.println(substring);
     }
 
+    @Test
+    public void trans(){
+        Long Lo = 1705507200000L;
+        // 手动进行日期转换
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(Lo);
+        Date parsedDate;
+//        try {
+//            parsedDate = dateFormat.parse(Lo);
+//        } catch (ParseException e) {
+//            throw new IllegalArgumentException("Invalid date format", e);
+//        }
+
+        System.out.println(date);
+    }
 
 
 }

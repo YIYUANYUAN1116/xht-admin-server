@@ -19,5 +19,5 @@ import java.util.Date;
 public interface SysOperLogService extends IService<SysOperLog> {
 
 
-    Page<SysOperLog> listPage(Integer page, Integer limit, Date date);
+    Page<SysOperLog> listPage(Integer page, Integer limit, Date startTime,Date endTime);
 }

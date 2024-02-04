@@ -7,7 +7,7 @@
 
     <!-- 用于select查询公用抽取的列 -->
     <sql id="columns">
-        id,name,image_url,parent_id,status,order_num,create_time,update_time,is_deleted
+        id,name,image_url,parent_id,status,order_num,create_time,update_time,is_deleted,is_leaf
     </sql>
 
     <!--    批量保存分类-->
@@ -21,7 +21,8 @@
         order_num,
         create_time ,
         update_time ,
-        is_deleted
+        is_deleted,
+        is_leaf
         ) values
         <foreach collection="categoryList" item="item" separator=",">
             (
@@ -33,7 +34,8 @@
             #{item.orderNum},
             now(),
             now(),
-            0
+            0,
+            #{item.isLeaf}
             )
         </foreach>
     </insert>
@@ -57,7 +59,7 @@
                 parent_id=0
             </if>
           and is_deleted=0
-        order by id desc
+        order by id asc
     </select>
 
     <!--// 判断每个分类是否有下一层分类-->
